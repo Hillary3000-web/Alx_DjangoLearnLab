@@ -1,4 +1,3 @@
-Book.objects.all()
-
+Book.objects.get()
 
 output = <QuerySet [<Book: 1984>]>
