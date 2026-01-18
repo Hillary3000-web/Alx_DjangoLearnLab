@@ -33,3 +33,11 @@ urlpatterns = [
     path('librarian/', views.librarian_view, name='librarian_view'),
     path('member/', views.member_view, name='member_view'),
 ]
+
+# Appending new views and patterns to the existing list
+from .views import list_books, LibraryDetailView
+
+urlpatterns += [
+    path('list_books/', list_books, name='list_books'),
+    path('library_detail/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
+]
