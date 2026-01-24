@@ -148,3 +148,29 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Note: In a real environment, you'd install django-csp. 
 # For this task, we enable the basic security middleware provided by Django.
 MIDDLEWARE.insert(0, 'django.middleware.security.SecurityMiddleware')
+
+# --- HTTPS and Secure Redirects Configuration ---
+
+# Force all non-HTTPS requests to be redirected to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# HTTP Strict Transport Security (HSTS)
+# Instructs the browser to only connect via HTTPS for the next year
+SECURE_HSTS_SECONDS = 31536000 
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Secure Cookies: Ensure cookies are only sent over HTTPS
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# --- Secure Headers ---
+
+# Prevent clickjacking by forbidding the site from being framed
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent the browser from guessing the content type (MIME-sniffing)
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable the browser's built-in XSS filter
+SECURE_BROWSER_XSS_FILTER = True
