@@ -23,3 +23,15 @@ def delete_book(request, pk):
     book = get_object_or_404(Book, pk=pk)
     # Implementation for deleting a book
     pass
+
+from .forms import ExampleForm
+
+# Secure view using ORM to prevent SQL injection
+def book_search(request):
+    query = request.GET.get('q')
+    if query:
+        # Django ORM handles parameterization automatically
+        books = Book.objects.filter(title__icontains=query)
+    else:
+        books = Book.objects.all()
+    return render(request, 'bookshelf/book_list.html', {'books': books})
