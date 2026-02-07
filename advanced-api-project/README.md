@@ -45,3 +45,16 @@ The `BookListView` supports advanced querying capabilities to improve data retri
 | **Filter by Year** | `?publication_year=YYYY` | `/api/books/?publication_year=2025` |
 | **Search** | `?search=term` | `/api/books/?search=Django` |
 | **Ordering (Desc)** | `?ordering=-field` | `/api/books/?ordering=-publication_year` |
+
+## 4. API Testing (Task 3)
+A comprehensive test suite is located in `api/test_views.py` to ensure endpoint integrity.
+
+### Testing Strategy
+- **CRUD Operations**: Verified through `GET`, `POST`, `PUT`, and `DELETE` requests.
+- **Permissions**: Confirmed that unauthenticated users are restricted from write operations.
+- **Queries**: Tested filtering by year, searching by title, and ordering by publication date.
+
+### How to Run Tests
+Run the following command in the project root:
+```bash
+python manage.py test api
