@@ -1,0 +1,10 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<div class="post-card">
+    <h2 class="post-title">User Profile</h2>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <hr style="border-color: rgba(255,255,255,0.1); margin: 2rem 0;">
+    <p class="post-meta">This is your personal dashboard. More features coming soon.</p>
+</div>
+{% endblock %}

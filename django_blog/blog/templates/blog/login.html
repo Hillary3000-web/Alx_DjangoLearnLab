@@ -1,0 +1,12 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<div class="post-card" style="max-width: 400px; margin: 2rem auto;">
+    <h2 class="post-title">Sign In</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-admin">Login</button>
+    </form>
+    <p style="margin-top: 1rem;">New here? <a href="{% url 'register' %}" style="color: var(--accent);">Create an account</a></p>
+</div>
+{% endblock %}
