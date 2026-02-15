@@ -28,12 +28,19 @@ urlpatterns = [
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
 ]
 
-from django.urls import path
-from .views import add_comment, CommentUpdateView, CommentDeleteView
+from .views import CommentCreateView, CommentUpdateView, CommentDeleteView
 
 urlpatterns = [
     # ... previous post urls ...
     path('post/<int:pk>/comments/new/', CommentCreateView.as_view(), name='add-comment'),
     path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),
+]
+
+from .views import search_posts, PostByTagListView
+
+urlpatterns = [
+    # ... previous urls ...
+    path('search/', search_posts, name='search-posts'),
+    path('tags/<str:tag_name>/', PostByTagListView.as_view(), name='posts-by-tag'),
 ]
