@@ -83,19 +83,21 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import UpdateView, DeleteView
 from .models import Post, Comment
 from .forms import CommentForm
+from django.views.generic import CreateView # Ensure this is imported
 
-# Adding a comment (Function-based view for simplicity in post detail)
-def add_comment(request, post_id):
-    post = get_object_or_404(Post, id=post_id)
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.author = request.user
-            comment.save()
-            return redirect('post-detail', pk=post.id)
-    return redirect('post-detail', pk=post.id)
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_form.html'
+
+    def form_valid(self, form):
+        # This links the comment to the specific post ID from the URL
+        form.instance.post = get_object_or_404(Post, pk=self.kwargs['pk'])
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return self.object.post.get_absolute_url()
 
 # Editing a comment
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
