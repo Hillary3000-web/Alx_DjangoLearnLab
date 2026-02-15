@@ -144,3 +144,40 @@ class PostByTagListView(ListView):
         tag_slug = self.kwargs.get('tag_name')
         # This works with django-taggit to filter posts by tag slug
         return Post.objects.filter(tags__slug=tag_slug)
+    
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.views.generic import (
+    ListView, DetailView, CreateView, UpdateView, DeleteView
+)
+from django.db.models import Q
+from .models import Post, Comment
+from .forms import PostForm, CommentForm, CustomUserCreationForm 
+
+# --- Task 1: Authentication Views (ADD THESE BACK) ---
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your account has been created! You can now log in')
+            return redirect('login')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'blog/register.html', {'form': form})
+
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        # This handles the "edit their profile" requirement
+        user = request.user
+        user.email = request.POST.get('email', user.email)
+        user.save()
+        messages.success(request, 'Profile updated successfully')
+    return render(request, 'blog/profile.html')
+
+# ... (The rest of your Class-Based Views for Posts/Comments stay below here) ...
