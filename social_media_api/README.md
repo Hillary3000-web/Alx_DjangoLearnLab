@@ -39,3 +39,26 @@ Users can follow other users to curate a personalized feed of posts.
 * **Follow User:** `POST /api/accounts/follow/<user_id>/` (Requires Authentication)
 * **Unfollow User:** `POST /api/accounts/unfollow/<user_id>/` (Requires Authentication)
 * **User Feed:** `GET /api/feed/` (Requires Authentication. Returns a paginated list of posts from followed users, ordered by most recent).
+
+## Deployment Setup
+This API is configured for production deployment using Gunicorn and WhiteNoise.
+
+### Production Requirements
+* `gunicorn`: Serves the application in production.
+* `whitenoise`: Handles static file serving.
+* `dj-database-url` & `psycopg2-binary`: For PostgreSQL database connection.
+
+### Security Configurations
+* `DEBUG = False`
+* `SECURE_BROWSER_XSS_FILTER = True`
+* `X_FRAME_OPTIONS = 'DENY'`
+* `SECURE_CONTENT_TYPE_NOSNIFF = True`
+* `SECURE_SSL_REDIRECT = True`
+
+### Deployment Steps
+1. Clone the repository to the production server.
+2. Set environment variables (e.g., `SECRET_KEY`, `DATABASE_URL`).
+3. Install dependencies: `pip install -r requirements.txt`.
+4. Run migrations: `python manage.py migrate`.
+5. Collect static files: `python manage.py collectstatic`.
+6. Start the server using Gunicorn: `gunicorn social_media_api.wsgi`.
