@@ -17,3 +17,18 @@ Token-based authentication is used.
 * **Register:** `POST /api/accounts/register/` (Requires: username, email, password. Returns: Token)
 * **Login:** `POST /api/accounts/login/` (Requires: username, password. Returns: Token)
 * **Profile:** `GET / PUT /api/accounts/profile/` (Requires Authentication Token in header: `Authorization: Token <your_token>`)
+
+## Posts and Comments Endpoints
+The API supports full CRUD operations for posts and comments, including pagination (10 items per page) and filtering.
+
+* **Posts:** `GET /api/posts/` | `POST /api/posts/` | `GET /api/posts/<id>/` | `PUT /api/posts/<id>/` | `DELETE /api/posts/<id>/`
+* **Comments:** `GET /api/comments/` | `POST /api/comments/` | `GET /api/comments/<id>/` | `PUT /api/comments/<id>/` | `DELETE /api/comments/<id>/`
+
+### Filtering
+You can search posts by title or content by appending `?search=<keyword>` to the URL.
+Example: `GET /api/posts/?search=django`
+
+### Permissions
+* Any user can read (GET) posts and comments.
+* You must be authenticated to create (POST) posts or comments.
+* You must be the author of a post or comment to update (PUT) or delete (DELETE) it.
