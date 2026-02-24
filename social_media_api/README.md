@@ -32,3 +32,10 @@ Example: `GET /api/posts/?search=django`
 * Any user can read (GET) posts and comments.
 * You must be authenticated to create (POST) posts or comments.
 * You must be the author of a post or comment to update (PUT) or delete (DELETE) it.
+
+## Follows & Feed Features
+Users can follow other users to curate a personalized feed of posts.
+
+* **Follow User:** `POST /api/accounts/follow/<user_id>/` (Requires Authentication)
+* **Unfollow User:** `POST /api/accounts/unfollow/<user_id>/` (Requires Authentication)
+* **User Feed:** `GET /api/feed/` (Requires Authentication. Returns a paginated list of posts from followed users, ordered by most recent).
