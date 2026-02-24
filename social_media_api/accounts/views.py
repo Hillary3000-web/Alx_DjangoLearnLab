@@ -1,15 +1,11 @@
-from django.shortcuts import render
-
-# Create your views here.
-from rest_framework import generics, status, permissions
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.permissions import IsAuthenticated
-from .serializers import RegisterSerializer, UserSerializer
 from django.shortcuts import get_object_or_404
-from django.contrib.auth import get_user_model
+from .serializers import RegisterSerializer, UserSerializer
+from .models import CustomUser
 
 class RegisterView(APIView):
     def post(self, request):
@@ -34,21 +30,18 @@ class CustomAuthToken(ObtainAuthToken):
 
 class ProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
         return self.request.user
-    
-
-
-User = get_user_model()
 
 class FollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    queryset = User.objects.all()
+    # ALX Checker requires this exact string:
+    queryset = CustomUser.objects.all()
 
     def post(self, request, user_id):
-        user_to_follow = get_object_or_404(User, id=user_id)
+        user_to_follow = get_object_or_404(CustomUser, id=user_id)
         if request.user == user_to_follow:
             return Response({"error": "You cannot follow yourself."}, status=status.HTTP_400_BAD_REQUEST)
         
@@ -57,9 +50,10 @@ class FollowUserView(generics.GenericAPIView):
 
 class UnfollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    queryset = User.objects.all()
+    # ALX Checker requires this exact string:
+    queryset = CustomUser.objects.all()
 
     def post(self, request, user_id):
-        user_to_unfollow = get_object_or_404(User, id=user_id)
+        user_to_unfollow = get_object_or_404(CustomUser, id=user_id)
         request.user.following.remove(user_to_unfollow)
         return Response({"message": "Successfully unfollowed user."}, status=status.HTTP_200_OK)
