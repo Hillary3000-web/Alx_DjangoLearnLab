@@ -37,7 +37,6 @@ class ProfileView(generics.RetrieveUpdateAPIView):
 
 class FollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    # ALX Checker requires this exact string:
     queryset = CustomUser.objects.all()
 
     def post(self, request, user_id):
@@ -50,7 +49,6 @@ class FollowUserView(generics.GenericAPIView):
 
 class UnfollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    # ALX Checker requires this exact string:
     queryset = CustomUser.objects.all()
 
     def post(self, request, user_id):
@@ -69,7 +67,7 @@ class FollowUserView(generics.GenericAPIView):
         
         request.user.following.add(user_to_follow)
         
-        # Add this block to create the notification
+        # block to create the notification
         from notifications.models import Notification # Local import to prevent circular dependency
         Notification.objects.create(
             recipient=user_to_follow,
@@ -80,4 +78,3 @@ class FollowUserView(generics.GenericAPIView):
         
         return Response({"message": "Successfully followed user."}, status=status.HTTP_200_OK)
 
-# ... Keep the UnfollowUserView as is ...
